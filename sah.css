@@ -1,0 +1,51 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+.grid2 {
+    display: grid;
+    grid-template-columns: repeat(8, 70px); /* 8 coloane a câte 50px */
+    grid-template-rows: repeat(8, 70px);    /* 8 rânduri a câte 50px */
+    grid-gap: 0;                            /* Fără spațiu între pătrate */
+                     /* Centrează tabla pe verticală */
+    width: fit-content;                     /* Asigură că grila are dimensiunea corectă */
+    margin: auto;     
+    border: 4px solid black;      
+}
+.casuta{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pion{
+    background-size: cover;   
+    width: 50px;
+    height: 50px;
+
+}  
+.nebun{
+    background-size: cover;   
+    width: 50px;
+    height: 50px; 
+}
+.tura{
+    background-size: cover;   
+    width: 50px;
+    height: 50px;  
+}
+.cal{
+    background-size: cover;   
+    width: 50px;
+    height: 50px;  
+}
+.regina{
+    background-size: cover;   
+    width: 50px;
+    height: 50px; 
+}
+.rege{
+    background-size: cover;
+    width: 50px;
+    height: 50px; 
+}
