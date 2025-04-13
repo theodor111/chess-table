@@ -282,10 +282,7 @@ function turaMovment(x,y,x1,y1,tura,casa){
         return true;
     }
     if(Number(y1)===Number(y) && ((tura.id==='alb' && ok===1)||(tura.id==='negru' && ok===0))){
-        console.log("da");
-
         if(Number(x1)>Number(x)){
-            console.log("da");
             for(let i=1;i<Math.abs(Number(x1)-Number(x));i++)
             {
                 const item4=document.querySelector(`#casuta${Number(x1)-i}-${Number(y1)}`);
@@ -328,11 +325,71 @@ function regeMovment(x,y,x1,y1,regele,casa){
         return true;
     if((Number(y)===Number(y1)+1 || Number(y)===Number(y1)- 1)&& Number(x)===Number(x1))
         return true;
+    if(Number(y1)<Number(y) && Number(y)-Number(y1)===2 && Number(x)===Number(x1)){
+        const item10=document.getElementById(`casuta${Number(x)}-${Number(y)-1}`);
+        const item11=document.getElementById(`casuta${Number(x)}-${Number(y)+1}`);
+        console.log(item11);
+        if(!item10.hasChildNodes() && item11.querySelector('.tura'))
+            return true;
+    }
+    if(Number(y1)>Number(y) && Number(y1)-Number(y)===2 && Number(x)===Number(x1)){
+        const item10=document.getElementById(`casuta${Number(x)}-${Number(y)+1}`);
+        const item11=document.getElementById(`casuta${Number(x)}-${Number(y)-1}`);
+        const item12=document.getElementById(`casuta${Number(x)}-${Number(y)-2}`);
+        if(!item10.hasChildNodes() && item12.querySelector('.tura') && !item11.hasChildNodes())
+            return true;
+    }
+
+
 }
     return false;
 }
 //functie rege
-
+function casutevalabiletura(x,y,piesa){
+    const circle=document.createElement('div');
+    circle.classList.add('cerc');
+    circle.style.backgroundImage="url('circle.png')";
+   for(const i=y+1;i<=8;i++){
+    const item2=document.getElementById(`casuta${x}-${i}`);
+    if(!item2.hasChildNodes())
+        item2.appendChild(circle);
+    else
+    {
+        item2.appendChild(circle);
+        break;
+    }
+   } 
+   for(const i=y-1;i>=1;i--){
+    const item2=document.getElementById(`casuta${x}-${i}`);
+    if(!item2.hasChildNodes())
+        item2.appendChild(circle);
+    else
+    {
+        item2.appendChild(circle);
+        break;
+    }
+   } 
+   for(const i=x+1;i<=8;i++){
+    const item2=document.getElementById(`casuta${i}-${y}`);
+    if(!item2.hasChildNodes())
+        item2.appendChild(circle);
+    else
+    {
+        item2.appendChild(circle);
+        break;
+    }
+   }
+   for(const i=x-1;i>=1;i--){
+    const item2=document.getElementById(`casuta${i}-${y}`);
+    if(!item2.hasChildNodes())
+        item2.appendChild(circle);
+    else
+    {
+        item2.appendChild(circle);
+        break;
+    }
+   }
+}
 function mat(x1,y1,regele){ 
 
 }
@@ -354,65 +411,41 @@ function mat(x1,y1,regele){
 
     regi.forEach(rege => {
         rege.addEventListener('click', function () {
-            cnt++;
-            if(regeSelectat){
-            if (((regeSelectat.id==='alb' && ok===1)||(regeSelectat.id==='negru' && ok===0)) && cnt!==0 ) {
-                return;}
-            }
-            regeSelectat = rege; 
+        regeSelectat = rege; 
+
         });
     });
 
     regine.forEach(regina => {
         regina.addEventListener('click', function () {
-            cnt++;
-            if(reginaSelectat){
-            if (((reginaSelectat.id==='alb' && ok===1)||(reginaSelectat.id==='negru' && ok===0)) && cnt!==0 ) {
-                return;}
-            }
             reginaSelectat = regina; 
         });
     });
 
     cai.forEach(cal => {
         cal.addEventListener('click', function () {
-            cnt++;
-            if(calSelectat){
-            if (((calSelectat.id==='alb' && ok===1)||(calSelectat.id==='negru' && ok===0)) && cnt!==0 ) {
-                return;}
-            }
+           
             calSelectat = cal; 
         });
     });
 
     ture.forEach(tura => {
-        tura.addEventListener('click', function () {
-            cnt++;
-            if(turaSelectat){
-            if (((turaSelectat.id==='alb' && ok===1)||(turaSelectat.id==='negru' && ok===0)) && cnt!==0 ) {
-                return;}
-
-            }
+        tura.addEventListener('click', function () {       
             turaSelectat = tura; 
+            casutevalabiletura(Number(turaSelectat.dataset.x),Number(turaSelectat.dataset.y),tura);
         });
     });
 
     pioni.forEach(pion => {
         pion.addEventListener('click', function () {
-            cnt++;
-            if(pionSelectat){
-            if (((pionSelectat.id==='alb' && ok===1)||(pionSelectat.id==='negru' && ok===0)) && cnt!==0 ) return;
-            }
+           
             pionSelectat = pion; 
         });
     });
 
     nebuni.forEach(nebun => {
         nebun.addEventListener('click', function () {
-            cnt++;
-            if(nebunSelectat){
-            if (((nebunSelectat.id==='alb' && ok===1)||(nebunSelectat.id==='negru' && ok===0)) && cnt!==0 ) return;
-            }
+           
             nebunSelectat = nebun; 
 
         });
@@ -420,29 +453,7 @@ function mat(x1,y1,regele){
     
     casute.forEach(casuta => {
         casuta.addEventListener('click', function () {
-            let ok1=1;
-            const item2 = document.querySelector('.rege#negru');
-            if(pionSelectat){
-                if(pion1(item2.dataset.x, item2.dataset.y,pionSelectat.dataset.x,pionSelectat.dataset.y,pionSelectat,item2)===true)
-                    ok1=0;
-            }
-            if(turaSelectat){
-                if(turaMovment(item2.dataset.x, item2.dataset.y,turaSelectat.dataset.x,turaSelectat.dataset.y,turaSelectat,item2)===true)
-                    ok1=0;
-            }
-            if(calSelectat){
-                if(calMovment(item2.dataset.x, item2.dataset.y,calSelectat.dataset.x,calSelectat.dataset.y,calSelectat,item2)===true)
-                    ok1=0;
-            }
-            if(nebunSelectat){
-                if(nebunul1(item2.dataset.x, item2.dataset.y,nebunSelectat.dataset.x,nebunSelectat.dataset.y,nebunSelectat,item2)===true)
-                    ok1=0;
-            }
-            if(reginaSelectat){
-                if(reginaMovment(item2.dataset.x, item2.dataset.y,reginaSelectat.dataset.x,reginaSelectat.dataset.y,reginaSelectat,item2)===true)
-                    ok1=0;
-            }
-            if(ok1===1){
+                  
             if(regeSelectat){
                 if(regeMovment(casuta.dataset.x, casuta.dataset.y,regeSelectat.dataset.x,regeSelectat.dataset.y,regeSelectat,casuta) && casuta.querySelector('div'))
                 {
@@ -471,18 +482,40 @@ function mat(x1,y1,regele){
                         ok=0;
                     if(regeSelectat.id==='negru' && ok===0)
                         ok=1;
+                    if(Math.abs(Number(regeSelectat.dataset.y)-Number(casuta.dataset.y))===2 && Number(casuta.dataset.x)===Number(regeSelectat.dataset.x) ){
+                            if(Number(regeSelectat.dataset.y)<Number(casuta.dataset.y))
+                            {
+                                const item15=document.getElementById(`casuta${Number(casuta.dataset.x)}-${Number(casuta.dataset.y)+1}`);
+                                const item16=document.getElementById(`casuta${Number(casuta.dataset.x)}-${Number(casuta.dataset.y)-1}`);
+                                const tura1=item15.querySelector('.tura');
+                                item16.appendChild(tura1);
+                                tura1.dataset.y=casuta.dataset.y-1;
+                            }
+                            if(Number(regeSelectat.dataset.y)>Number(casuta.dataset.y))
+                                {
+                                    const item15=document.getElementById(`casuta${Number(casuta.dataset.x)}-${Number(casuta.dataset.y)+1}`);
+                                    const item16=document.getElementById(`casuta${Number(casuta.dataset.x)}-${Number(casuta.dataset.y)-2}`);
+                                    const tura1=item16.querySelector('.tura');
+                                    item15.appendChild(tura1);
+                                    tura1.dataset.y=casuta.dataset.y+3;
+                                }
+                    }
                     casuta.appendChild(regeSelectat);
                     regeSelectat.dataset.x=casuta.dataset.x;
                     regeSelectat.dataset.y=casuta.dataset.y;
+                    nebunSelectat = null;
+                    pionSelectat=null;
+                    turaSelectat=null;
+                    calSelectat=null;
+                    reginaSelectat = null;
                     regeSelectat=null;
                 }
         
             }
-
+            
             if(reginaSelectat){
                 if(reginaMovment(casuta.dataset.x, casuta.dataset.y,reginaSelectat.dataset.x,reginaSelectat.dataset.y,reginaSelectat,casuta) && casuta.querySelector('div'))
                 {
-                   
                     if(reginaSelectat.id==='alb' && ok===1)
                         ok=0;
                     if(reginaSelectat.id==='negru' && ok===0)
@@ -503,7 +536,8 @@ function mat(x1,y1,regele){
               }
               if (reginaSelectat && casuta.children.length === 0) { 
                 if (reginaMovment(casuta.dataset.x, casuta.dataset.y,reginaSelectat.dataset.x,reginaSelectat.dataset.y,reginaSelectat,casuta)){
-                    
+                  
+                    console.log('da frate ');
                     if(reginaSelectat.id==='alb' && ok===1)
                         ok=0;
                     if(reginaSelectat.id==='negru' && ok===0)
@@ -511,7 +545,12 @@ function mat(x1,y1,regele){
                     casuta.appendChild(reginaSelectat);
                     reginaSelectat.dataset.x=casuta.dataset.x;
                     reginaSelectat.dataset.y=casuta.dataset.y;
-                    reginaSelectat=null;
+                    nebunSelectat = null;
+                pionSelectat=null;
+                turaSelectat=null;
+                calSelectat=null;
+                reginaSelectat = null;
+                regeSelectat=null;
                 }
         
             }      
@@ -546,7 +585,12 @@ function mat(x1,y1,regele){
                     casuta.appendChild(calSelectat);
                     calSelectat.dataset.x=casuta.dataset.x;
                     calSelectat.dataset.y=casuta.dataset.y;
+                    nebunSelectat = null;
+                    pionSelectat=null;
+                    turaSelectat=null;
                     calSelectat=null;
+                    reginaSelectat = null;
+                    regeSelectat=null;
                 }
         
             }
@@ -582,7 +626,12 @@ function mat(x1,y1,regele){
                     casuta.appendChild(turaSelectat);
                     turaSelectat.dataset.x=casuta.dataset.x;
                     turaSelectat.dataset.y=casuta.dataset.y;
+                    nebunSelectat = null;
+                    pionSelectat=null;
                     turaSelectat=null;
+                    calSelectat=null;
+                    reginaSelectat = null;
+                    regeSelectat=null;
                 }
         
             }
@@ -620,6 +669,11 @@ function mat(x1,y1,regele){
                 nebunSelectat.dataset.x=casuta.dataset.x;
                 nebunSelectat.dataset.y=casuta.dataset.y;
                 nebunSelectat = null;
+                pionSelectat=null;
+                turaSelectat=null;
+                calSelectat=null;
+                reginaSelectat = null;
+                regeSelectat=null;
                     
             }
     
@@ -648,11 +702,16 @@ function mat(x1,y1,regele){
                     casuta.appendChild(pionSelectat);
                 pionSelectat.dataset.x=casuta.dataset.x;
                 pionSelectat.dataset.y=casuta.dataset.y;
+                nebunSelectat = null;
                 pionSelectat=null;
+                turaSelectat=null;
+                calSelectat=null;
+                reginaSelectat = null;
+                regeSelectat=null;
                 }
         
             }
-        }
+        
        
             console.log(ok);
         });
